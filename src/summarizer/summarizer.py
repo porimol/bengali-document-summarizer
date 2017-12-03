@@ -71,7 +71,7 @@ def document_summarizer(bangla_corpus):
             if len(sentence.split()) >= 4:
                 sent_count += 1
                 cw = bn_tok.connecting_word(sentence)
-                sent_score = round(alpha + stf + beta * pv_counter + cw, 6)
+                sent_score = round(alpha * stf + beta * pv_counter + cw, 6)
                 # top_weighting_sentences[sentence] = sent_score
                 top_weighting_sentences[tokenized_sentences[index]] = sent_score
 
