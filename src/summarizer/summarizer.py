@@ -5,6 +5,7 @@ import json
 from ..bengali_summarizer.bengalisenttok import BengaliSentTok
 from ..bengali_summarizer.tfidf import TFIDF
 import operator
+import math
 
 # summarizer = Blueprint("summarizer", __name__, url_prefix="/wub/")
 summarizer = Blueprint("summarizer", __name__)
@@ -14,12 +15,11 @@ summarizer = Blueprint("summarizer", __name__)
 def summery():
     if request.method == "POST":
         document = request.form["bengali_document"]
-        summary_frequency = int(request.form["summary_frequency"])
-        summary_frequency = summary_frequency if summary_frequency > 0 else 10
         response = {}
 
         if len(document) > 0:
             top_weighting_sentences = document_summarizer(document)
+            summary_frequency = round(math.sqrt(len(top_weighting_sentences)))
             top_sentence = [
                 sentence[0] for sentence in sorted(
                     top_weighting_sentences.items(),
@@ -67,8 +67,7 @@ def document_summarizer(bangla_corpus):
             # S=α*STF+β*PV+δ+λ
             alpha = 1
             beta = 1
-            # if pv_counter >= 3 and len(sentence.split()) >= 4:
-            if len(sentence.split()) >= 4:
+            if pv_counter >= 3 and len(sentence.split()) >= 4:
                 sent_count += 1
                 cw = bn_tok.connecting_word(sentence)
                 sent_score = round(alpha * stf + beta * pv_counter + cw, 6)
