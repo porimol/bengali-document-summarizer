@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from flask import Blueprint, render_template, request, session, redirect, url_for
+from flask import Blueprint, render_template, request, make_response, session, redirect, url_for
 import json
 from ..bengali_summarizer.bengalisenttok import BengaliSentTok
 from ..bengali_summarizer.tfidf import TFIDF
@@ -30,8 +30,8 @@ def summery():
             response["original_document"] = document
             response["summary_frequency"] = summary_frequency
             response["summery"] = '। '.join(top_sent.strip() for top_sent in top_sentence)
+        print(response)
 
-        print(json.dumps(response))
         return render_template("summarizer/home.html", summary_response=response)
 
     return render_template("summarizer/home.html")
@@ -75,4 +75,14 @@ def document_summarizer(bangla_corpus):
                 top_weighting_sentences[tokenized_sentences[index]] = sent_score
 
     return top_weighting_sentences
+
+@summarizer.route("/download/", methods=["POST"])
+def summery_download():
+    if request.method == "POST":
+        summery_content = request.form["summery_content"]
+        response = make_response(summery_content)
+        response.headers['Content-Disposition'] = 'attachment; filename=summery.txt'
+        response.mimetype = 'text/txt'
+
+        return response
 

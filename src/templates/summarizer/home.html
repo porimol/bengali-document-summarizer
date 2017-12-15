@@ -18,23 +18,20 @@
                 <!--<input type="number" class="form-control" id="summary_frequency" aria-describedby="summary_frequency_help" value="{% if summary_response %}{{ summary_response['summary_frequency'] }}{% else %}10{% endif %}" name="summary_frequency">-->
                 <!--<small id="summary_frequency_help" class="form-text text-muted">Default frequency 10</small>-->
             <!--</div>-->
-            <div class="form-check">
-                <label class="form-check-label">
-                <input type="checkbox" class="form-check-input">
-                Check me out for download!
-                </label>
-            </div>
-            <button type="submit" class="btn btn-primary">Summery Generate</button>
+            <button type="submit" class="btn btn-primary" style="cursor:pointer">Summery Generate</button>
             <hr/>
         </form>
     </div>
 
     {% if summary_response %}
     <div class="blog-post">
+        <form action="{{ url_for('summarizer.summery_download') }}" method="POST">
         <div class="form-group">
-            <label for="summery">Summarized Document</label>
-            <textarea class="form-control" id="summery" rows="15">{{ summary_response['summery'] }}</textarea>
+            <label for="summery_content">Summarized Document</label>
+            <textarea class="form-control" id="summery_content" name="summery_content" rows="15" readonly>{{ summary_response['summery'] }}</textarea>
         </div>
+        <button type="submit" class="btn btn-primary" style="cursor:pointer">Download Summary</button>
+        </form>
     </div>
     {% endif %}
 
