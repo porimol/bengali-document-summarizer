@@ -19,7 +19,7 @@ def summery():
 
         if len(document) > 0:
             top_weighting_sentences = document_summarizer(document)
-            summary_frequency = round(math.sqrt(len(top_weighting_sentences)))
+            summary_frequency = math.ceil(math.sqrt(len(top_weighting_sentences)))
             top_sentence = [
                 sentence[0] for sentence in sorted(
                     top_weighting_sentences.items(),
