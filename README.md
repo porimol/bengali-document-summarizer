@@ -58,12 +58,12 @@ $ git clone https://github.com/porimol/bengali-document-summarizer .
 ```
 
 Install required packages by running the following command
-```python
+```ssh
 $ pip install -r requirements.txt
 ```
 
 Its time to run the following command
-```python
+```ssh
 $ python main.py
 ```
 
