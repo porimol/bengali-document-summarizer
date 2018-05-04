@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 # Created by https://www.gitignore.io/api/linux,python,pycharm
 
 ### Linux ###
@@ -128,11 +126,8 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
-<<<<<<< HEAD
 *,cover
-=======
 *.cover
->>>>>>> 76fc92a0eeeedd2facd5bed5553ebd128d1187da
 .hypothesis/
 
 # Translations
@@ -186,9 +181,7 @@ ENV/
 # mkdocs documentation
 /site
 
-<<<<<<< HEAD
 # End of https://www.gitignore.io/api/linux,python,pycharm
-=======
 # mypy
 .mypy_cache/
->>>>>>> 76fc92a0eeeedd2facd5bed5553ebd128d1187da
+RnD
