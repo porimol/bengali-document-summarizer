@@ -58,10 +58,11 @@ class BengaliSentTok:
 
 if __name__ == "__main__":
     import operator
-    from .tfidf import TFIDF
+    from src.bengali_summarizer.tfidf import TFIDF
+    file_dir_path = dirname(realpath(__file__))
 
-    cw_file = 'connecting_words.txt'
-    bangla_corpus = 'bangla_corpus.txt'
+    cw_file = file_dir_path + '/connecting_words.txt'
+    bangla_corpus = file_dir_path + '/bangla_corpus.txt'
     pattern = r'[?|।!]'
     tfidf_obj = TFIDF()
     bn_tok = BengaliSentTok(bangla_corpus)

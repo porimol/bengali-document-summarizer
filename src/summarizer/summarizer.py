@@ -23,7 +23,7 @@ def summery():
 
             response["original_document"] = document
             response["summary_frequency"] = summary_frequency
-            response["summery"] = '। '.join(top_sent.strip() for top_sent in top_sentence)
+            response["summery"] = '। '.join(top_sent.strip() for top_sent in top_sentence)+'।'
 
         return render_template("summarizer/home.html", summary_response=response)
 
@@ -39,8 +39,8 @@ def document_summarizer(bangla_corpus):
     term_frequency = {}
     inverse_df = {}
     tfidf = {}
-    corpora = ' '.join(bn_tok.bn_sentence_tok(pattern))
-    pv_counter = 5
+    corpora = ' '.join(tokenized_sentences)
+    # pv_counter = 5
     sent_count = 0
 
     top_weighting_sentences = {}
@@ -48,20 +48,21 @@ def document_summarizer(bangla_corpus):
         stf = 0
         if len(doc) > 0:
             for word in set(doc):
-                stf = round(stf + tfidf_obj.tf(word, corpora), 6)
+                stf += round(tfidf_obj.tf(word, corpora), 6)
                 term_frequency[word] = tfidf_obj.tf(word, corpora)
                 inverse_df[word] = tfidf_obj.idf(word, tokenized_documents)
                 tfidf[word] = tfidf_obj.tf_idf(word, doc, tokenized_documents)
 
             sentence = ' '.join(doc)
-            pv_counter = round(pv_counter-0.01, 2)
+            pv_counter = round(1 / math.sqrt(index) if index > 4 else 5, 2)
+            # pv_counter = round(pv_counter - 0.01, 2)
             # pv_counter = 1 / (index + 1)
-            # S=α*STF+β*PV+δ+λ
             alpha = 1
             beta = 1
-            if pv_counter >= 3 and len(sentence.split()) >= 4:
+            if len(sentence.split()) >= 4:
                 sent_count += 1
                 cw = bn_tok.connecting_word(sentence)
+                # S=α*STF+β*PV+cw
                 sent_score = round(alpha * stf + beta * pv_counter + cw, 6)
                 # top_weighting_sentences[sentence] = sent_score
                 top_weighting_sentences[tokenized_sentences[index]] = sent_score
@@ -79,6 +80,7 @@ def summery_download():
         return response
 
     except Exception as ex:
+
         response = {
             # "message": "Error Message: {0}".format(ex),
             "message": "Something went wrong!",
