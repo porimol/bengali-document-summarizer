@@ -1,17 +1,11 @@
 # coding=utf-8
-
-from flask import Blueprint, render_template, request, make_response, session, redirect, url_for
-import json
+from flask import render_template, request, make_response, jsonify
 from ..bengali_summarizer.bengalisenttok import BengaliSentTok
 from ..bengali_summarizer.tfidf import TFIDF
 import operator
 import math
 
-# summarizer = Blueprint("summarizer", __name__, url_prefix="/wub/")
-summarizer = Blueprint("summarizer", __name__)
 
-
-@summarizer.route("/", methods=["GET", "POST"])
 def summery():
     if request.method == "POST":
         document = request.form["bengali_document"]
@@ -30,7 +24,6 @@ def summery():
             response["original_document"] = document
             response["summary_frequency"] = summary_frequency
             response["summery"] = '। '.join(top_sent.strip() for top_sent in top_sentence)
-        print(response)
 
         return render_template("summarizer/home.html", summary_response=response)
 
@@ -38,7 +31,6 @@ def summery():
 
 
 def document_summarizer(bangla_corpus):
-
     tfidf_obj = TFIDF()
     pattern = r'[?|।!]'
     bn_tok = BengaliSentTok(bangla_corpus)
@@ -76,9 +68,9 @@ def document_summarizer(bangla_corpus):
 
     return top_weighting_sentences
 
-@summarizer.route("/download/", methods=["POST"])
+
 def summery_download():
-    if request.method == "POST":
+    try:
         summery_content = request.form["summery_content"]
         response = make_response(summery_content)
         response.headers['Content-Disposition'] = 'attachment; filename=summery.txt'
@@ -86,3 +78,11 @@ def summery_download():
 
         return response
 
+    except Exception as ex:
+        response = {
+            # "message": "Error Message: {0}".format(ex),
+            "message": "Something went wrong!",
+            "status": False
+        }
+
+        return jsonify(response)

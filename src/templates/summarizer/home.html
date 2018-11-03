@@ -25,7 +25,7 @@
 
     {% if summary_response %}
     <div class="blog-post">
-        <form action="{{ url_for('summarizer.summery_download') }}" method="POST">
+        <form action="{{ url_for('document_summarizer.summery_download') }}" method="POST">
         <div class="form-group">
             <label for="summery_content">Summarized Document</label>
             <textarea class="form-control" id="summery_content" name="summery_content" rows="15" readonly>{{ summary_response['summery'] }}</textarea>
